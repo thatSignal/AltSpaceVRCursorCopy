@@ -14,7 +14,7 @@
 * I created a tiny api that I was intending Unity to hit via the WWW class to get customer reviews of each piece of furniture. These reviews, including a model containing product name and price, would then be displayed on the price signs attached to each product. Unfortunately, I was having some issues Deserializing the JSON string into the container classes I'd created. I'd decided to focus on more user interaction and liveliness in the scene. 
 
 ### Leap Motion Card Interaction
-##### during a 36 hour hackathon I messed around with the Leap Motion SDK
+##### during a 36 hour hackathon I toyed with the Leap Motion SDK
 * This project is primarily in here to show an attempt at an interaction model, not elegant code.   
 * The scene to load is located at: LeapMotionTest1/Assets/LeapMotion/Scenes/Leap_Hands_Demo_VRCards
 * if you open your left hand, with your palm facing you, your hand of three test cards should appear. Moving your right pointer finger in front of one of the cards will cause it to become selected.
