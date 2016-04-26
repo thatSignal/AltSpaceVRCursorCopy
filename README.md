@@ -2,7 +2,7 @@
 
 ### Alterations to the Furniture Scene (Ikea Model Room)
 * Code for a reticle meant to be used with a VR headset.
-* The Sensitivty setting for a mouse controlled reticle has not been done yet. I'm planning on jumping on that soon. 
+* The Sensitivty setting for a mouse controlled reticle has not been done, as I was testing everything with a VR headset. I will try to get a chance to do that soon.
 * Additional code surrounding the scene in order to make for a more robust experience.
  * sometimes, when in VR, it would be nice to know an object is interactive before I spend the time traveling to it. In AltspaceVR, in the blocks room, there is an elevator with a button on the outside. I was excited to see where it would take me, but, to my dismay, the button was not interactive. I developed a little system to communicate that an object you're looking at is interactive even though you are too far to actually use it. 
 * Grab/Carry functionality
