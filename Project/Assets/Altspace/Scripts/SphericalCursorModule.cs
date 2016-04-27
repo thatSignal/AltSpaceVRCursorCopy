@@ -4,7 +4,7 @@
 public class SphericalCursorModule : MonoBehaviour {
     // This is a sensitivity parameter that should adjust how sensitive the mouse control is.
     public float Sensitivity;
-    public bool centerLockCursor;
+    public bool useMouse;
 
     // This is a scale factor that determines how much to scale down the cursor based on its collision distance.
     public float DistanceScaleFactor;
@@ -43,20 +43,18 @@ public class SphericalCursorModule : MonoBehaviour {
         _defaultCursorScale = Cursor.transform.localScale;
         CursorMeshRenderer = Cursor.transform.GetComponentInChildren<MeshRenderer>();
         CursorMeshRenderer.GetComponent<Renderer>().material.color = new Color(0.0f, 0.8f, 1.0f);
-        //Input.mousePosition = new Vector3(Screen.width / 2, Screen.height / 2);
     }
 
     void Update()
     {
         //SetCursorPosition();
-        if(!centerLockCursor)
+        if(useMouse)
         {
             SetCursorPositionWithSensitivity();
         }
-        else
+        else if(!useMouse)
         {
-            //SetCursorCenter();
-            SetCursorPosition();
+            SetCursorCenter();
         }
         
     }
@@ -70,7 +68,8 @@ public class SphericalCursorModule : MonoBehaviour {
 
     void SetCursorCenter()
     {
-        UnityEngine.Cursor.lockState = CursorLockMode.None;
+        UnityEngine.Cursor.lockState = CursorLockMode.Locked;
+        UnityEngine.Cursor.visible = false;
         Vector3 centerScreen = new Vector3(Screen.width / 2, Screen.height / 2, 0.0f);
         Ray rayThroughScreenCenter = Camera.main.ScreenPointToRay(centerScreen);
         RaycastHit centerRayHit;
@@ -96,7 +95,8 @@ public class SphericalCursorModule : MonoBehaviour {
     //added 3:30 on Tuesday
     void SetCursorPositionWithSensitivity()
     {
-        UnityEngine.Cursor.lockState = CursorLockMode.Locked;
+        UnityEngine.Cursor.lockState = CursorLockMode.None;
+        UnityEngine.Cursor.visible = false;
         Vector3 cursorWorldPosition = Cursor.transform.position;
         Vector3 cursorScreenPosition = Camera.main.WorldToScreenPoint(cursorWorldPosition);
 
@@ -121,9 +121,9 @@ public class SphericalCursorModule : MonoBehaviour {
         }
     }
 
+    // Was using this before doing the sensitivity work
     void SetCursorPosition()
     {
-        // Was using this before doing the sensitivity work
         _cursorRay = Camera.main.ScreenPointToRay(Input.mousePosition);
         Physics.Raycast(_cursorRay, out _cursorRayHit, _maxCursorDistance, ColliderMask);
         
