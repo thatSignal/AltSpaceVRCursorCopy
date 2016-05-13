@@ -14,7 +14,7 @@ public class PoliceCar : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-	
+        gameObject.active = false;
 	}
 	
 	// Update is called once per frame
@@ -24,6 +24,7 @@ public class PoliceCar : MonoBehaviour {
 
     void RespondToCall()
     {
+        gameObject.active = true;
         StartCoroutine("DriveToPosition");
     }
 

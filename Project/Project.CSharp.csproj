@@ -88,13 +88,13 @@
     <Compile Include="Assets\Assets\Scripts\Grabbable.cs" />
     <Compile Include="Assets\Assets\Scripts\HUDManager.cs" />
     <Compile Include="Assets\Assets\Scripts\HideCursor.cs" />
+    <Compile Include="Assets\Assets\Scripts\IkeaPlayerController.cs" />
     <Compile Include="Assets\Assets\Scripts\JsonManager.cs" />
     <Compile Include="Assets\Assets\Scripts\LightFader.cs" />
     <Compile Include="Assets\Assets\Scripts\MathTools.cs" />
     <Compile Include="Assets\Assets\Scripts\PoliceCar.cs" />
     <Compile Include="Assets\Assets\Scripts\ProductData.cs" />
     <Compile Include="Assets\Assets\Scripts\ProductInfoPlaque.cs" />
-    <Compile Include="Assets\Assets\Scripts\QuickTurn.cs" />
     <Compile Include="Assets\Assets\Scripts\SecuritySystem.cs" />
     <Compile Include="Assets\Assets\Scripts\Selectable.cs" />
     <Compile Include="Assets\Assets\Scripts\SelectionManager.cs" />

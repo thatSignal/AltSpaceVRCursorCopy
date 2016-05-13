@@ -10,13 +10,11 @@ public class SphericalCursorModule : MonoBehaviour {
     public float DistanceScaleFactor;
 
     //Evan's Stuff
-    private Ray _cursorRay;
-    public float _maxCursorDistance = 20.0f;
-    private RaycastHit _cursorRayHit;
+    private float _maxCursorDistance = 20.0f;
     private Vector3 _defaultCursorScale;
     private SelectionManager _selectionManager;
-
-    public float _defaultCursorDistance;
+    private float _defaultCursorDistance;
+    
 
 
     // This is the layer mask to use when performing the ray cast for the objects.
@@ -37,6 +35,9 @@ public class SphericalCursorModule : MonoBehaviour {
 
     void Awake() {
 
+        UnityEngine.Cursor.lockState = CursorLockMode.None;
+        UnityEngine.Cursor.visible = false;
+
         _selectionManager = SelectionManager.Instance();
         _defaultCursorDistance = 10.0f;
         Cursor = transform.Find("Cursor").gameObject;
@@ -45,9 +46,12 @@ public class SphericalCursorModule : MonoBehaviour {
         CursorMeshRenderer.GetComponent<Renderer>().material.color = new Color(0.0f, 0.8f, 1.0f);
     }
 
+    void Start()
+    {
+    }
+
     void Update()
     {
-        //SetCursorPosition();
         if(useMouse)
         {
             SetCursorPositionWithSensitivity();
@@ -56,16 +60,39 @@ public class SphericalCursorModule : MonoBehaviour {
         {
             SetCursorCenter();
         }
+
+        if(Input.GetButtonDown("Cursor Toggle"))
+        {
+            ToggleMouseCursor();
+        }
+
+        UpdateMouseSensitivity();
+        
         
     }
 
-    Vector3 GetMouseDelta()
+    void UpdateMouseSensitivity()
     {
-        Vector3 mouseDelta = new Vector3(Input.GetAxis("Mouse X"), Input.GetAxis("Mouse Y"), 0.0f);
+        Debug.Log("Showing mouse scroll");
+        Debug.Log(Input.GetAxis("Mouse ScrollWheel"));
+        float scrollInput = Input.GetAxis("Mouse ScrollWheel");
 
-        return mouseDelta;
+        if (scrollInput < 0.0f)
+        {
+            Sensitivity += 1.0f;
+        }
+        else if (Sensitivity > 0.0f && scrollInput > 0.0f)
+        {
+            Sensitivity -= 1.0f;
+        }
+
+        if(Sensitivity < 0)
+        {
+            Sensitivity = 0.0f;
+        }
     }
 
+    //for use primarily with VR headset
     void SetCursorCenter()
     {
         UnityEngine.Cursor.lockState = CursorLockMode.Locked;
@@ -99,7 +126,6 @@ public class SphericalCursorModule : MonoBehaviour {
         UnityEngine.Cursor.visible = false;
         Vector3 cursorWorldPosition = Cursor.transform.position;
         Vector3 cursorScreenPosition = Camera.main.WorldToScreenPoint(cursorWorldPosition);
-
         Vector3 targetScreenPosition = cursorScreenPosition + (GetMouseDelta() * Sensitivity);
         Ray rayThoughTargetScreenPos = Camera.main.ScreenPointToRay(targetScreenPosition);
         RaycastHit rayHitFromTargetScreenPos;
@@ -120,32 +146,24 @@ public class SphericalCursorModule : MonoBehaviour {
             _selectionManager.SetCurrentSelection(0.0f, null);
         }
     }
+   
 
-    // Was using this before doing the sensitivity work
-    void SetCursorPosition()
+    Vector3 GetMouseDelta()
     {
-        _cursorRay = Camera.main.ScreenPointToRay(Input.mousePosition);
-        Physics.Raycast(_cursorRay, out _cursorRayHit, _maxCursorDistance, ColliderMask);
-        
-        if(_cursorRayHit.collider != null)
-        {
-            Cursor.transform.position = _cursorRayHit.point;
-            SetCursorScale(_cursorRayHit.distance);
+        Vector3 mouseDelta = new Vector3(Input.GetAxis("Mouse X"), Input.GetAxis("Mouse Y"), 0.0f);
 
-            _selectionManager.SetCurrentSelection(_cursorRayHit.distance, _cursorRayHit.collider.gameObject);
-            
-        }
-        else
-        {
-            Cursor.transform.position = _cursorRay.GetPoint(_defaultCursorDistance);
-            SetCursorScale(_defaultCursorDistance);
-
-            _selectionManager.SetCurrentSelection(0.0f, null);
-        }
+        return mouseDelta;
     }
 
+
+    //I didn't like the feel of the cursor scale shrinking a little bit when it selected an object, so I decided to just scale normally. 
     void SetCursorScale(float distance)
     {
         Cursor.transform.localScale = (distance * _defaultCursorScale);
+    }
+
+    void ToggleMouseCursor()
+    {
+        useMouse = !useMouse;
     }
 }
